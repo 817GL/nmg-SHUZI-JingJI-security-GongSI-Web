@@ -1,0 +1,31 @@
+# 运行期数据
+data/logs/*
+data/temp/*
+data/excel/*
+data/collections/*
+data/database/*.db-wal
+data/database/*.db-shm
+
+# 本机配置 / 凭据
+.env
+.env.*
+*.key
+*.pem
+*.p12
+*.pfx
+credentials*
+secrets*
+token*
+
+# 编辑器 / 系统垃圾
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# 临时文件
+*.tmp
+*.bak
+*.old
+~$*
