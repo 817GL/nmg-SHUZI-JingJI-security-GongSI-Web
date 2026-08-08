@@ -1,0 +1,22 @@
+密码资源池接口调用统计系统 Web v2.0.2
+
+【核心修复】
+- 彻底取消对本机 Python / py.exe / Node.js / npm 的依赖。
+- 内置 Windows x64 独立 Web 服务端 server\web_server.exe。
+- 支持中文目录、任意盘符和离线启动。
+- START_WEB.cmd 只负责启动本地 EXE，不再查找 Python。
+
+【已迁移到独立服务端】
+- Web 静态页面与 Glassmorphism UI。
+- /api/bootstrap、日志、文件、设置、任务状态等基础接口。
+- 六资源池接口连通性测试。
+- 前四资源池 getEdsDetail / getInterfaceDetail 采集和 JSON 保存。
+- success/fail/total、sign、HMAC 基础一致性校验。
+
+【仍在迁移】
+- SQLite systems.db 完整兼容层。
+- 后两个政务外网完整统计采集。
+- Excel 模板保格式写入与下载。
+- 系统数据库扫描/校对/新增/改名/恢复事件。
+
+注意：v2.0.2 的重点是把“服务器无 Python 无法启动”的问题从架构上消除，而不是继续要求目标机安装运行环境。
