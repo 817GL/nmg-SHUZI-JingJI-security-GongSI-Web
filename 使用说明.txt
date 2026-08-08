@@ -1,0 +1,27 @@
+密码资源池接口调用统计系统 Web v2.0.2 独立运行版
+
+一、启动
+1. 完整解压 ZIP，不要直接在压缩包内运行。
+2. 双击 START_WEB.cmd。
+3. 服务启动后会自动打开：http://127.0.0.1:8088
+4. 局域网其他电脑使用服务器IP访问，例如：http://192.168.56.100:8088
+
+二、本版本运行环境
+- 不需要安装 Python。
+- 不需要安装 Node.js。
+- 不需要 pip / npm。
+- 不需要联网下载运行环境。
+- server\web_server.exe 是随包自带的 Windows x64 独立服务端。
+
+三、停止
+双击 STOP_WEB.cmd，或关闭正在运行的服务窗口。
+
+四、当前迁移状态
+- Web 首页与全部页面可以直接打开。
+- 六资源池接口连通性测试已迁移到独立服务端。
+- 前四个资源池 getEdsDetail / getInterfaceDetail 采集已迁移，可保存 JSON 结果并执行基础计数校验。
+- 旧 SQLite systems.db、完整政务外网采集、Excel 模板写入仍处于从 Python 后端迁移到独立服务端阶段。
+- 本版本不会修改旧桌面版 systems.db。
+
+五、日志
+运行日志：data\logs\web_server.log
