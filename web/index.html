@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>密码资源池接口调用统计系统</title>
+  <link rel="icon" href="/app_icon.png" />
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+<div class="scene grain">
+  <div class="shell">
+    <aside class="sidebar glass-panel">
+      <div class="brand"><img src="/app_icon.png" alt="logo"><div><small>鄂尔多斯市政务</small><strong>密码资源池接口调用统计</strong></div></div>
+      <nav id="nav"></nav>
+      <div class="db-mini glass-sub"><small>基准数据库</small><div><b id="miniBaseline">0 / 6</b><span id="miniDbState" class="badge ok">读取中</span></div></div>
+    </aside>
+
+    <section class="workspace">
+      <header class="topbar glass-panel">
+        <div><small id="pageEyebrow">Web v2.0.1</small><h1 id="pageTitle">总览</h1></div>
+        <div class="top-actions"><div class="status-dot"><i></i><span id="serverState">服务器在线</span></div><button class="glass-btn" onclick="refreshAll()">刷新</button></div>
+      </header>
+
+      <div id="notice" class="notice hidden"></div>
+
+      <main>
+        <section class="view active" data-view="dashboard">
+          <div class="hero glass-card wide">
+            <div class="hero-copy"><small>密码资源池接口调用统计系统</small><h2>集中采集、系统基准、名称匹配与 Excel 输出</h2><p>Web 版把原桌面工具的核心业务放到服务器。六个资源池仍由服务器通过当前 VPN 访问，其他电脑只需要浏览器。</p><div class="actions"><button class="primary-btn" onclick="gotoView('collection')">进入数据采集</button><button class="glass-btn" onclick="gotoView('database')">查看系统数据库</button></div></div>
+            <div class="hero-orb"><div class="orb-ring"><span id="heroBaseline">0/6</span><small>资源池基准</small></div></div>
+          </div>
+          <div class="stats-grid">
+            <div class="glass-card stat"><span>系统总数</span><b id="statSystems">0</b><small>systems.db</small></div>
+            <div class="glass-card stat"><span>正常系统</span><b id="statActive">0</b><small>当前状态正常</small></div>
+            <div class="glass-card stat"><span>待确认新增</span><b id="statNew">0</b><small>未确认新接入事件</small></div>
+            <div class="glass-card stat"><span>数据库校对</span><b id="statAudit">0/6</b><small>已通过资源池</small></div>
+          </div>
+          <div class="dashboard-grid">
+            <div class="glass-card span2"><div class="section-head"><div><small>资源池状态</small><h3>六个密码资源池</h3></div><button class="glass-btn small" onclick="gotoView('collection')">采集设置 →</button></div><div id="poolCards" class="pool-grid"></div></div>
+            <div class="glass-card"><div class="section-head"><div><small>统计周期</small><h3>默认日期</h3></div></div><div class="date-stack"><label>开始日期<input id="dashStart" type="date"></label><label>结束日期<input id="dashEnd" type="date"></label><button class="primary-btn full" onclick="syncDatesFromDashboard();gotoView('collection')">使用此周期采集</button></div></div>
+            <div class="glass-card span2"><div class="section-head"><div><small>系统动态</small><h3>最近新增 / 改名 / 恢复</h3></div><button class="glass-btn small" onclick="ackEvents()">全部确认</button></div><div id="eventList" class="event-list"></div></div>
+            <div class="glass-card"><div class="section-head"><div><small>运行状态</small><h3>服务器信息</h3></div></div><div id="serverInfo" class="info-list"></div></div>
+          </div>
+        </section>
+
+        <section class="view" data-view="collection">
+          <div class="glass-card"><div class="section-head"><div><small>数据采集</small><h3>选择资源池与统计日期</h3></div></div>
+            <div class="form-grid"><label>资源池<select id="collectPool"></select></label><label>开始日期<input id="collectStart" type="date"></label><label>结束日期<input id="collectEnd" type="date"></label><label>Bearer Token（仅需要时填写）<input id="collectToken" type="password" autocomplete="off" placeholder="免 Token 时保持空白"></label></div>
+            <div class="callout">VPN 仍由服务器人工连接。Token 只随本次请求进入服务器内存，不写入 settings、日志或数据库。</div>
+            <div class="actions"><button class="glass-btn" onclick="runTest()">测试当前 VPN / 接口</button><button class="primary-btn" onclick="runCollect()">采集当前资源池</button><button class="glass-btn" onclick="refreshResults()">刷新当前周期结果</button></div>
+          </div>
+          <div class="split-grid"><div class="glass-card"><div class="section-head"><div><small>已采集</small><h3>当前周期结果</h3></div></div><div id="resultCards" class="result-list"></div></div><div class="glass-card"><div class="section-head"><div><small>任务进度</small><h3>后台任务</h3></div></div><div id="jobBox" class="job-box empty">还没有正在执行的任务。</div></div></div>
+          <div class="glass-card"><div class="section-head"><div><small>政务外网</small><h3>导入平台 XLSX</h3></div></div><div class="upload-row"><select id="govImportPool"><option>电信政务外网</option><option>联通政务外网</option></select><input id="govImportFile" type="file" accept=".xlsx,.xls"><button class="glass-btn" onclick="uploadGov()">导入统计表</button></div><p class="muted">导入结果只作为统计数据，不会自动修改 systems.db。</p></div>
+        </section>
+
+        <section class="view" data-view="database">
+          <div class="glass-card"><div class="section-head"><div><small>已有系统数据库</small><h3>系统检索与资源池扫描</h3></div><div class="actions"><button class="glass-btn small" onclick="document.getElementById('dbFile').click()">导入基准库</button><input id="dbFile" type="file" accept=".db" hidden onchange="uploadDb(this)"><button class="glass-btn small" onclick="location.href='/api/database/export'">导出基准库</button></div></div>
+            <div class="db-toolbar"><input id="systemQuery" class="glass-input" placeholder="搜索系统全名、简称、单位、AppId…" oninput="debouncedSearch()"><select id="scanPool"></select><button class="primary-btn" onclick="scanDatabase(false)">选择资源池扫描</button><button class="glass-btn" onclick="scanDatabase(true)">数据库校对</button></div>
+          </div>
+          <div class="stats-grid"><div class="glass-card stat"><span>系统总数</span><b id="dbTotal">0</b><small>数据库记录</small></div><div class="glass-card stat"><span>正常</span><b id="dbActive">0</b><small>本次仍发现</small></div><div class="glass-card stat"><span>资源池基准</span><b id="dbBaseline">0/6</b><small>baseline</small></div><div class="glass-card stat"><span>校对通过</span><b id="dbAudit">0/6</b><small>audit</small></div></div>
+          <div class="glass-card table-card"><div class="table-wrap"><table><thead><tr><th>资源池</th><th>应用名称</th><th>所属单位</th><th>AppId</th><th>状态</th><th>首次发现</th><th>最近发现</th></tr></thead><tbody id="systemsBody"></tbody></table></div></div>
+        </section>
+
+        <section class="view" data-view="matching"><div class="glass-card"><div class="section-head"><div><small>名称匹配</small><h3>当前采集结果的待确认记录</h3></div></div><div class="form-grid compact"><label>资源池<select id="matchPool"></select></label><label>开始日期<input id="matchStart" type="date"></label><label>结束日期<input id="matchEnd" type="date"></label><div class="form-action"><button class="glass-btn" onclick="loadResultDetails('matching')">读取结果</button></div></div></div><div class="glass-card table-card"><div class="table-wrap"><table><thead><tr><th>第一接口名称</th><th>第二接口名称</th><th>疑似候选</th><th>状态</th><th>原因</th><th>建议</th></tr></thead><tbody id="matchBody"></tbody></table></div></div></section>
+
+        <section class="view" data-view="excel"><div class="glass-card"><div class="section-head"><div><small>Excel 生成</small><h3>从当前周期已采集结果生成正式工作簿</h3></div></div><div class="form-grid compact"><label>开始日期<input id="excelStart" type="date"></label><label>结束日期<input id="excelEnd" type="date"></label></div><div id="excelPools" class="check-grid"></div><div class="actions"><button class="glass-btn" onclick="refreshExcelPools()">检查已采集结果</button><button class="primary-btn" onclick="generateExcel()">生成 Excel</button></div></div><div class="glass-card"><div class="section-head"><div><small>输出文件</small><h3>最近 Excel</h3></div></div><div id="excelFiles" class="file-list"></div></div></section>
+
+        <section class="view" data-view="validation"><div class="glass-card"><div class="section-head"><div><small>数据校验</small><h3>接口数量平衡与数据异常</h3></div></div><div class="form-grid compact"><label>资源池<select id="validationPool"></select></label><label>开始日期<input id="validationStart" type="date"></label><label>结束日期<input id="validationEnd" type="date"></label><div class="form-action"><button class="glass-btn" onclick="loadResultDetails('validation')">读取校验</button></div></div></div><div class="glass-card table-card"><div class="table-wrap"><table><thead><tr><th>来源</th><th>应用名称</th><th>异常类型</th><th>详情</th></tr></thead><tbody id="validationBody"></tbody></table></div></div></section>
+
+        <section class="view" data-view="logs"><div class="glass-card"><div class="section-head"><div><small>运行日志</small><h3>服务器端操作日志</h3></div><button class="glass-btn small" onclick="loadLogs()">刷新</button></div><pre id="logBox" class="log-box">读取中…</pre></div><div class="glass-card"><div class="section-head"><div><small>文件中心</small><h3>最近生成文件</h3></div><button class="glass-btn small" onclick="loadFiles()">刷新</button></div><div id="fileList" class="file-list"></div></div></section>
+
+        <section class="view" data-view="settings"><div class="glass-card"><div class="section-head"><div><small>系统设置</small><h3>Web 服务器与后端参数</h3></div></div><div class="form-grid"><label>监听地址<input id="setHost" class="glass-input" value="0.0.0.0"></label><label>端口<input id="setPort" class="glass-input" type="number" value="8088"></label><label>接口超时（秒）<input id="setTimeout" class="glass-input" type="number" value="30"></label><label>Excel 模板路径<input id="setTemplate" class="glass-input"></label></div><div class="callout">监听地址或端口修改后，需要重新启动 Web 服务才会生效。服务器端只配置一次，访问端无需安装 Python、Node 或依赖。</div><div class="actions"><button class="primary-btn" onclick="saveSettings()">保存设置</button></div></div></section>
+      </main>
+    </section>
+  </div>
+</div>
+<div id="toastHost"></div>
+<script src="/app.js"></script>
+</body></html>
