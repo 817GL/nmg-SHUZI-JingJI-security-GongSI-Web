@@ -1,0 +1,50 @@
+name: Bug report
+description: Report a reproducible problem without including sensitive environment data.
+title: "[Bug] "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for reporting a problem. Do not include production tokens, passwords, private endpoints, VPN credentials, real logs containing sensitive data, or business records.
+  - type: textarea
+    id: summary
+    attributes:
+      label: Problem summary
+      description: What happened, and what did you expect instead?
+    validations:
+      required: true
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: Steps to reproduce
+      description: Use sanitized or mock values only.
+      placeholder: |
+        1. Open ...
+        2. Select ...
+        3. Observe ...
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: Version
+      placeholder: Web v2.0.2
+  - type: dropdown
+    id: area
+    attributes:
+      label: Area
+      options:
+        - Web UI
+        - API interaction
+        - Data validation
+        - System inventory
+        - Excel/reporting
+        - Logs/files
+        - Configuration
+        - Other
+  - type: textarea
+    id: context
+    attributes:
+      label: Sanitized context
+      description: Add non-sensitive screenshots, mock payloads, or error text if useful.
