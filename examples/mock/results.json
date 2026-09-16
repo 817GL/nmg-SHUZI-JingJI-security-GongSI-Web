@@ -1,0 +1,16 @@
+{
+  "items": [
+    {
+      "pool": "Example Pool A",
+      "rows": 128
+    },
+    {
+      "pool": "Example Pool B",
+      "rows": 96
+    },
+    {
+      "pool": "Example Platform C",
+      "rows": 42
+    }
+  ]
+}
