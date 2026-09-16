@@ -1,49 +1,108 @@
-# 内蒙古数字经济安全科技有限公司｜Web 版私有项目备份
+# API Usage Statistics Dashboard
 
-本仓库用于保存“密码资源池接口调用统计系统 Web 版”的前端源码、运行脚本、说明文档和正式独立运行版本信息，仅用于项目备份、版本留存和灾难恢复。
+A lightweight Web dashboard for collecting, validating, reviewing, and reporting API usage statistics across multiple service pools.
 
-## 当前备份版本
+This project grew out of a real operational need: repetitive API connectivity checks, usage-data collection, validation, system inventory review, and report preparation were taking significant manual effort. I currently maintain the project independently and continue improving its reliability, documentation, maintainability, and security.
 
-- 系统版本：Web v2.0.2
-- 版本类型：Windows x64 独立运行版
-- 原始包：`密码资源池接口调用统计系统_Web_v2.0.2_独立运行版.zip`
-- 原始包大小：2,712,237 bytes（约 2.59 MiB）
-- SHA-256：`d97ef98171294f791a9e1ae83777109b00ee9c0ad27f7f735de6f828f34b0b45`
-- 仓库可见性：Private
+> 中文说明：这是一个用于多资源池接口调用统计、数据校验、系统名录管理与报表输出的 Web 工具。仓库公开内容不应包含生产环境凭据、真实 Token、VPN 凭据、内部敏感地址或生产业务数据。
 
-## v2.0.2 包含内容
+## Features
+
+- API connectivity testing
+- API usage data collection and basic counting/validation
+- System inventory and baseline management
+- Name matching and exception review
+- SQLite-based local data management
+- Excel-oriented reporting workflow
+- Task status, logs, and file management
+- Configurable service-pool settings
+
+## Current Status
+
+The project is under active maintenance.
+
+Current Web version: **v2.0.2**
+
+Completed or partially completed work includes:
+
+- Web interface and navigation
+- Basic service endpoints
+- Connectivity testing for multiple service pools
+- Usage-detail collection for supported pools
+- Basic counting and validation
+- System inventory workflows
+- Task progress and log views
+
+Work in progress includes:
+
+- broader SQLite compatibility
+- additional collection workflows
+- Excel template-preserving output
+- system database scan / validation / change-event handling
+- automated tests
+- stronger security review and configuration handling
+
+## Repository Scope
+
+This repository currently contains the Web front-end source, launch scripts, documentation, and historical packaging information.
+
+Important: the packaged `server/web_server.exe` referenced by historical release notes does **not** mean that the complete backend source code is present in this repository. The current public source scope should therefore not be described as a complete backend implementation.
+
+Key source files include:
 
 - `web/index.html`
 - `web/styles.css`
 - `web/app.js`
-- `web/app_icon.png`
-- `server/web_server.exe`
-- `templates/template.xlsx`
 - `START_WEB.cmd`
 - `STOP_WEB.cmd`
 - `OPEN_WEB.cmd`
-- `查看运行日志.cmd`
-- `使用说明.txt`
-- `版本说明.txt`
 
-## 运行方式
+## Running the Packaged Web Version
 
-完整独立运行包解压后，双击 `START_WEB.cmd` 启动。默认本机地址：
+For the packaged Windows x64 build, start the application with:
 
-`http://127.0.0.1:8088`
+```text
+START_WEB.cmd
+```
 
-局域网其他电脑可通过服务器 IP + `8088` 端口访问。
+Default local address:
 
-## 当前迁移状态
+```text
+http://127.0.0.1:8088
+```
 
-v2.0.2 已迁移 Web 静态页面、基础服务接口、六资源池接口连通性测试，以及前四个资源池 `getEdsDetail` / `getInterfaceDetail` 采集和基础计数校验。
+The packaged build and source snapshot may not have identical capabilities while migration work is ongoing.
 
-仍在迁移：SQLite `systems.db` 完整兼容层、后两个政务外网完整统计采集、Excel 模板保格式写入与下载、系统数据库扫描/校对/新增/改名/恢复事件。
+## Security and Data Handling
 
-## 重要说明
+Do **not** commit or publish:
 
-当前原始 ZIP 中包含 Web 前端源码，但 `server/web_server.exe` 对应的后端源代码并未包含在这个包中。因此，本仓库现阶段属于“Web 前端源码 + 独立服务端成品 + 正式运行包备份”，不能把它描述为完整后端源码工程。
+- production API tokens
+- passwords or credentials
+- VPN credentials
+- private keys or certificates
+- internal-only endpoints that should not be public
+- production logs
+- temporary business data
+- sensitive database contents
 
-运行日志、临时数据、本机 Token、密码、VPN 凭据等不得提交到仓库。
+The repository `.gitignore` excludes common credential, key, temporary-data, and runtime-data patterns. Security issues should be reported according to `SECURITY.md`.
 
-> 本仓库必须始终保持 **Private**。
+## Roadmap
+
+- [ ] Complete backend-source migration where redistribution is permitted
+- [ ] Add automated tests
+- [ ] Add a sanitized/mock API environment
+- [ ] Improve configuration separation for local and production use
+- [ ] Add CI checks
+- [ ] Expand validation and error handling
+- [ ] Improve security scanning and dependency review
+- [ ] Improve contributor and developer documentation
+
+## Contributing
+
+See `CONTRIBUTING.md` for contribution guidance. Please never include production credentials, private endpoints, or real business data in issues or pull requests.
+
+## Maintenance
+
+The project is currently maintained independently. The focus is practical maintainability: reducing repetitive operational work, improving correctness, and making the codebase easier and safer to review and evolve.
