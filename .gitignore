@@ -17,6 +17,18 @@ credentials*
 secrets*
 token*
 
+# Python / test cache
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Node / build artifacts
+node_modules/
+dist/
+coverage/
+
 # 编辑器 / 系统垃圾
 .vscode/
 .idea/
