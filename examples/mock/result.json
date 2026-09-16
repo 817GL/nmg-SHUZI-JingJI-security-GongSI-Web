@@ -1,0 +1,20 @@
+{
+  "match_issues": [
+    {
+      "first_name": "Example Service Alpha",
+      "second_name": "Example Service A",
+      "candidates": "Example Service Alpha",
+      "status": "review",
+      "reason": "Synthetic naming difference",
+      "suggestion": "Confirm whether both names represent the same application"
+    }
+  ],
+  "validation_issues": [
+    {
+      "source": "Example Pool A",
+      "application_name": "Example System A",
+      "issue_type": "count_mismatch",
+      "detail": "Synthetic fixture: expected 10 records, received 9"
+    }
+  ]
+}
