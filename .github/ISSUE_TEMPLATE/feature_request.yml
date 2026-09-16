@@ -1,0 +1,42 @@
+name: Feature request
+description: Suggest an improvement or new capability.
+title: "[Feature] "
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Please describe the use case with sanitized examples only. Do not include production credentials, private endpoints, or real business data.
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem or use case
+      description: What workflow or maintenance problem would this improve?
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed change
+      description: Describe the behavior you would like to see.
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+      description: Optional. Describe any workaround or alternative design.
+  - type: dropdown
+    id: area
+    attributes:
+      label: Area
+      options:
+        - Web UI
+        - API interaction
+        - Data validation
+        - System inventory
+        - Excel/reporting
+        - Security
+        - Testing/CI
+        - Documentation
+        - Other
