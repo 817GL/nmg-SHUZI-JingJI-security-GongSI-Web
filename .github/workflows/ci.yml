@@ -31,5 +31,30 @@ jobs:
       - name: Check JavaScript syntax
         run: node --check web/app.js
 
+      - name: Validate Python syntax
+        run: python -m py_compile scripts/validate_public_repo.py examples/mock/run_demo.py
+
       - name: Validate public repository and mock data
         run: python scripts/validate_public_repo.py
+
+      - name: Smoke test sanitized demo server
+        shell: bash
+        run: |
+          python examples/mock/run_demo.py --port 8765 > /tmp/api-usage-demo.log 2>&1 &
+          DEMO_PID=$!
+          trap 'kill "$DEMO_PID" 2>/dev/null || true' EXIT
+
+          READY=0
+          for _ in {1..20}; do
+            if curl -fsS http://127.0.0.1:8765/api/bootstrap > /tmp/bootstrap.json; then
+              READY=1
+              break
+            fi
+            sleep 0.25
+          done
+
+          test "$READY" = "1"
+          curl -fsS http://127.0.0.1:8765/ > /tmp/index.html
+          curl -fsS http://127.0.0.1:8765/api/results > /tmp/results.json
+          python -m json.tool /tmp/bootstrap.json > /dev/null
+          python -m json.tool /tmp/results.json > /dev/null
