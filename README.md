@@ -106,3 +106,7 @@ See `CONTRIBUTING.md` for contribution guidance. Please never include production
 ## Maintenance
 
 The project is currently maintained independently. The focus is practical maintainability: reducing repetitive operational work, improving correctness, and making the codebase easier and safer to review and evolve.
+
+## License
+
+This project is licensed under the MIT License. See `LICENSE` for details.
